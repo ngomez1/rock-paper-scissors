@@ -12,10 +12,15 @@
     font-size: large;
     margin-top: 48px;
     margin-left: 12px;
+    border-style: dotted;
+    border-color: white;
+    border-width: 2px;
+    width: fit-content;
+    padding: 12px;
 }
 
 .outcome {
-    margin-top: 12px;
+    margin-top: 36px;
     margin-left: 12px;
 }
 
@@ -29,6 +34,9 @@ button {
     margin-left: 12px;
     border-radius: 8px;
     transition:all .07s ease;
+    font-size: 24px;
+    padding: 20px;
+
 }
 
 .playerWins {
