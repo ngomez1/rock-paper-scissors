@@ -20,8 +20,11 @@ function capitalize(string){
     return string.replace(/^\w/, (c) => c.toUpperCase());
 }
 
-function play (playerSelection,computerSelection) {
-    playerSelection = playerSelection.toLowerCase();
+function play (e) { 
+    playerSelection = this.classList.value;
+    computerSelection = getComputerChoice();
+
+    this.classList.add('selected');
 
     let playerChoice = 0;
     if (playerSelection === "rock") {
@@ -30,32 +33,49 @@ function play (playerSelection,computerSelection) {
         playerChoice = 1;
     } else if (playerSelection === "scissors") {
         playerChoice = 2;
-    } else {
-        return "You did not enter a valid choice. Please try again."
     }
 
     if (playerChoice===computerSelection) {
-        return "You tied! " + capitalize(playerSelection) + " meets " + capitalize(computerSelectionTranslated) + ".";
+        div.textContent = "You tied! " + capitalize(playerSelection) + " meets " + capitalize(computerSelectionTranslated) + ".";
     } else if (playerChoice - computerSelection === -1 || playerChoice - computerSelection === 2) {
         trackc++;
-        return "You lose! " + capitalize(computerSelectionTranslated) + " beats " + capitalize(playerSelection) + ".";
+        div.textContent = "You lose! " + capitalize(computerSelectionTranslated) + " beats " + capitalize(playerSelection) + ".";
     } else {
         trackp++;
-        return "You win! " + capitalize(playerSelection) + " beats " + capitalize(computerSelectionTranslated) + ".";
+        div.textContent = "You win! " + capitalize(playerSelection) + " beats " + capitalize(computerSelectionTranslated) + ".";
     }
-}
 
-function game (){
-    for (let i = 0; i < 5; i++) {
-        console.log(play(prompt("Enter rock, paper, or scissors: "),getComputerChoice()));
-    }
-    if (trackp>trackc) {
-        console.log("You won the game with " + trackp + " wins.");
-    } else if (trackc>trackp) {
-        console.log("You lost the game. The computer had " + trackc + " wins.");
+    divCW.textContent = "Computer's score: " + trackc;
+    divPW.textContent = "Player's score: " + trackp;
+
+    if (trackp === 5) {
+        div.textContent = "Click a button to begin the game."
+        divGame.textContent = "Victory";
+        divGame.style.color = "blue";
+        trackp = 0;
+        trackc = 0;
+    } else if (trackc === 5) {
+        div.textContent = "Click a button to begin the game."
+        divGame.textContent = "Defeat";
+        divGame.style.color = "red";
+        trackp = 0;
+        trackc = 0;
     } else {
-        console.log("You tied the game.");
+        divGame.textContent = "Beat the computer to 5 wins to claim victory!";
+        divGame.style.color = "white";
     }
 }
 
-game();
+const btns = document.querySelectorAll("button");
+div = document.querySelector(".outcome");
+btns.forEach(button => button.addEventListener('click',play));
+btns.forEach(button => button.addEventListener('transitionend', removeTransition));
+
+divCW = document.querySelector(".computerWins");
+divPW = document.querySelector(".playerWins");
+divGame = document.querySelector(".game");
+
+function removeTransition(e){
+    if(e.propertyName !== 'transform') return; //skip if event is not a transform
+    this.classList.remove('selected'); //remove class from the button (this)
+  }
